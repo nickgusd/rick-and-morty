@@ -8,6 +8,7 @@ import Loader from '../components/Loader/Loader.jsx';
 import Search from '../components/Search/Search.jsx';
 
 import { SearchWrapper } from '../components/CharacterCard.js';
+import PaginationComponent from '../components/Pagination/Pagination.jsx';
 
 export default function Characters() {
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ export default function Characters() {
   const [inputData, setInputData] = useState('');
   const [search, setSearch] = useState(false);
   const [urlParams, setUrlParams] = useState(null);
+  const [page, setPage] = useState(0);
   const parse = queryString.parse(location.search);
   const params = urlParams || { name: inputData };
 
@@ -63,6 +65,19 @@ export default function Characters() {
     }
   };
 
+  // eslint-disable-next-line no-unused-vars
+  const onPageChange = (e, { activePage }) => {
+    setPage(activePage);
+    setSearch(!search);
+    navigate({
+      pathname: '/characters',
+      search: `?${createSearchParams({
+        name: inputData,
+        page: activePage
+      })}`
+    });
+  };
+
   return (
     <div onKeyDown={keyDownHandler}>
       <h1>Characters</h1>
@@ -75,6 +90,11 @@ export default function Characters() {
             <ButtonComponent onClick={handleClick} />
           </SearchWrapper>
           <CharacterCard character={data.results} />
+          <PaginationComponent
+            totalPages={data?.info?.pages}
+            onChange={onPageChange}
+            activePage={page}
+          />
         </>
       )}
     </div>
