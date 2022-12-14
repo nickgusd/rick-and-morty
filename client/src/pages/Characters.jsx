@@ -12,16 +12,13 @@ import { SearchWrapper } from '../components/CharacterCard.js';
 export default function Characters() {
   const navigate = useNavigate();
   const location = useLocation();
-
   const [data, setData] = useState([]);
-
-  // const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [inputData, setInputData] = useState('');
   const [search, setSearch] = useState(false);
   const [urlParams, setUrlParams] = useState(null);
   const parse = queryString.parse(location.search);
-  const params = urlParams || { name: inputData, status: 'alive' };
+  const params = urlParams || { name: inputData };
 
   useEffect(() => {
     setUrlParams(parse);
@@ -43,11 +40,7 @@ export default function Characters() {
     fetchData();
   }, [search]);
 
-  const handleChange = (event) => {
-    setInputData(event.target.value);
-  };
-
-  const handleClick = () => {
+  const onSearch = () => {
     setSearch(!search);
     navigate({
       pathname: '/characters',
@@ -55,8 +48,23 @@ export default function Characters() {
     });
   };
 
+  const handleChange = (event) => {
+    setInputData(event.target.value);
+  };
+
+  const handleClick = () => {
+    onSearch();
+  };
+
+  const keyDownHandler = (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      onSearch();
+    }
+  };
+
   return (
-    <div>
+    <div onKeyDown={keyDownHandler}>
       <h1>Characters</h1>
       {isLoading ? (
         <Loader />
