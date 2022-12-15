@@ -18,6 +18,7 @@ export default function Characters() {
   const [inputData, setInputData] = useState('');
   const [search, setSearch] = useState(false);
   const [urlParams, setUrlParams] = useState(null);
+  const [error, setError] = useState(null);
   const [page, setPage] = useState(0);
   const parse = queryString.parse(location.search);
   const params = urlParams || { name: inputData };
@@ -35,7 +36,7 @@ export default function Characters() {
           setData(response);
           setUrlParams(null);
         })
-        .catch((error) => console.log(error))
+        .catch((error) => setError(error))
         .finally(() => setTimeout(() => setIsLoading(false), 200));
     };
 
@@ -89,12 +90,17 @@ export default function Characters() {
             <Search isLoading={false} onChange={handleChange} />
             <ButtonComponent onClick={handleClick} />
           </SearchWrapper>
-          <CharacterCard character={data.results} />
-          <PaginationComponent
-            totalPages={data?.info?.pages}
-            onChange={onPageChange}
-            activePage={page}
-          />
+          {!data.error && (
+            <>
+              <CharacterCard character={data.results} />
+              <PaginationComponent
+                totalPages={data?.info?.pages || 0}
+                onChange={onPageChange}
+                activePage={page}
+              />
+            </>
+          )}
+          {data.error && !error && <p>No Results</p>}
         </>
       )}
     </div>
