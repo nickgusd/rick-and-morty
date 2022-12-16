@@ -6,9 +6,9 @@ import ButtonComponent from '../components/Button/Button.jsx';
 import { CharacterCard } from '../components/CharacterCard.jsx';
 import Loader from '../components/Loader/Loader.jsx';
 import Search from '../components/Search/Search.jsx';
-
 import { SearchWrapper } from '../components/CharacterCard.js';
 import PaginationComponent from '../components/Pagination/Pagination.jsx';
+import { Layout } from '../components/Layout/Layout.jsx';
 
 export default function Characters() {
   const navigate = useNavigate();
@@ -79,18 +79,20 @@ export default function Characters() {
     });
   };
 
+  console.log('data', data);
+
   return (
-    <div onKeyDown={keyDownHandler}>
+    <Layout>
       <h1>Characters</h1>
       {isLoading ? (
         <Loader />
       ) : (
-        <>
+        <div onKeyDown={keyDownHandler}>
           <SearchWrapper>
             <Search isLoading={false} onChange={handleChange} />
             <ButtonComponent onClick={handleClick} />
           </SearchWrapper>
-          {!data.error && (
+          {!data.error && data && (
             <>
               <CharacterCard character={data.results} />
               <PaginationComponent
@@ -101,8 +103,8 @@ export default function Characters() {
             </>
           )}
           {data.error && !error && <p>No Results</p>}
-        </>
+        </div>
       )}
-    </div>
+    </Layout>
   );
 }

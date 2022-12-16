@@ -1,55 +1,30 @@
-import { combineReducers } from 'redux';
-// import todos from './todos'
-// import visibilityFilter from './visibilityFilter'
+import {  createSlice } from '@reduxjs/toolkit';
+// import { serializeError } from '../utils/serializeError';
+// import Axios from "axios";
 
-const initialState = [
-  {
-    text: 'Use Redux',
-    completed: false,
-    id: 0
+const initialState = {
+  locations: {
+    data: {}
+  },
+  characters: [],
+  episodes: []
+};
+
+const { actions, reducer } = createSlice({
+  name: 'locations',
+  initialState,
+  reducers: {
+    setLocations(state, action) {
+      state.locations.locations = action.payload;
+    },
+    reset() {
+      return initialState;
+    }
   }
-];
-
-function todos(state = initialState, action) {
-  console.log('action', action);
-  switch (action.type) {
-    case 'location':
-      return state;
-    case 'characters':
-      return state;
-
-    //   case EDIT_TODO:
-    //     return state.map(todo =>
-    //       todo.id === action.id ?
-    //         { ...todo, text: action.text } :
-    //         todo
-    //     )
-
-    //   case COMPLETE_TODO:
-    //     return state.map(todo =>
-    //       todo.id === action.id ?
-    //         { ...todo, completed: !todo.completed } :
-    //         todo
-    //     )
-
-    //   case COMPLETE_ALL_TODOS:
-    //     const areAllMarked = state.every(todo => todo.completed)
-    //     return state.map(todo => ({
-    //       ...todo,
-    //       completed: !areAllMarked
-    //     }))
-
-    //   case CLEAR_COMPLETED:
-    //     return state.filter(todo => todo.completed === false)
-
-    default:
-      return state;
-  }
-}
-
-const rootReducer = combineReducers({
-  todos
-  //   visibilityFilter
 });
 
-export default rootReducer;
+export const rickAndMortyActions = {
+  ...actions
+};
+
+export default reducer; 
