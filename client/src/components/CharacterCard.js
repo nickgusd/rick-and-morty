@@ -46,4 +46,9 @@ export const Row = styled.div`
   flex-direction: row;
   gap: 8px;
   justify-content: flex-start;
+  width: ${(props) => (props.character ? '60%' : null)};
+`;
+
+export const ImageWrapper = styled.div`
+  margin: 24px 0px;
 `;

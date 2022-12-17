@@ -1,21 +1,23 @@
-import { useEffect, useState } from 'react';
-import { useNavigate, useLocation, createSearchParams } from 'react-router-dom';
-import queryString from 'query-string';
+import { useEffect, useState } from "react";
+import { useNavigate, useLocation, createSearchParams } from "react-router-dom";
+import queryString from "query-string";
 
-import ButtonComponent from '../components/Button/Button.jsx';
-import { CharacterCard } from '../components/CharacterCard.jsx';
-import Loader from '../components/Loader/Loader.jsx';
-import Search from '../components/Search/Search.jsx';
-import { SearchWrapper } from '../components/CharacterCard.js';
-import PaginationComponent from '../components/Pagination/Pagination.jsx';
-import { Layout } from '../components/Layout/Layout.jsx';
+import ButtonComponent from "../components/Button/Button.jsx";
+import { CharacterCard } from "../components/CharacterCard.jsx";
+import Loader from "../components/Loader/Loader.jsx";
+import Search from "../components/Search/Search.jsx";
+import { SearchWrapper, ImageWrapper } from "../components/CharacterCard.js";
+import PaginationComponent from "../components/Pagination/Pagination.jsx";
+import { Layout } from "../components/Layout/Layout.jsx";
+
+import RickToilet from "../assets/rick_and_morty_toilet.png";
 
 export default function Characters() {
   const navigate = useNavigate();
   const location = useLocation();
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [inputData, setInputData] = useState('');
+  const [inputData, setInputData] = useState("");
   const [search, setSearch] = useState(false);
   const [urlParams, setUrlParams] = useState(null);
   const [error, setError] = useState(null);
@@ -25,9 +27,6 @@ export default function Characters() {
 
   useEffect(() => {
     setUrlParams(parse);
-  }, []);
-
-  useEffect(() => {
     const fetchData = () => {
       fetch(`https://rickandmortyapi.com/api/character${location.search}`)
         .then((res) => res.json())
@@ -46,9 +45,10 @@ export default function Characters() {
   const onSearch = () => {
     setSearch(!search);
     navigate({
-      pathname: '/characters',
+      pathname: "/characters",
       search: `?${createSearchParams(params)}`
     });
+    setPage(1);
   };
 
   const handleChange = (event) => {
@@ -60,7 +60,7 @@ export default function Characters() {
   };
 
   const keyDownHandler = (event) => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       event.preventDefault();
       onSearch();
     }
@@ -71,7 +71,7 @@ export default function Characters() {
     setPage(activePage);
     setSearch(!search);
     navigate({
-      pathname: '/characters',
+      pathname: "/characters",
       search: `?${createSearchParams({
         name: inputData,
         page: activePage
@@ -79,18 +79,16 @@ export default function Characters() {
     });
   };
 
-  console.log('data', data);
-
   return (
     <Layout>
-      <h1>Characters</h1>
+      {data.error && !error ? <h1>No Results Found</h1> : <h1>Characters</h1>}
       {isLoading ? (
         <Loader />
       ) : (
         <div onKeyDown={keyDownHandler}>
           <SearchWrapper>
             <Search isLoading={false} onChange={handleChange} />
-            <ButtonComponent onClick={handleClick} />
+            <ButtonComponent onClick={handleClick} primary={true} />
           </SearchWrapper>
           {!data.error && data && (
             <>
@@ -102,7 +100,11 @@ export default function Characters() {
               />
             </>
           )}
-          {data.error && !error && <p>No Results</p>}
+          {data.error && !error && (
+            <ImageWrapper>
+              <img src={RickToilet} alt="rick" />
+            </ImageWrapper>
+          )}
         </div>
       )}
     </Layout>
