@@ -65,7 +65,7 @@ export default function Locations() {
             setTimeout(() => setIsLoading(false), 200);
           });
       });
-  }, [index, router.search]);
+  }, [index, router]);
 
   const handleNavigate = () => {
     setIndex(index + 1);

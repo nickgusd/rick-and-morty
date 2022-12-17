@@ -80,15 +80,15 @@ export default function Characters() {
   };
 
   return (
-    <Layout>
+    <Layout noResults={data.error && !error}>
       {data.error && !error ? <h1>No Results Found</h1> : <h1>Characters</h1>}
       {isLoading ? (
         <Loader />
       ) : (
-        <div onKeyDown={keyDownHandler}>
+        <div onKeyDown={keyDownHandler} style={{ padding: "24px" }}>
           <SearchWrapper>
             <Search isLoading={false} onChange={handleChange} />
-            <ButtonComponent onClick={handleClick} primary={true} />
+            <ButtonComponent onClick={handleClick} primary={true} search />
           </SearchWrapper>
           {!data.error && data && (
             <>

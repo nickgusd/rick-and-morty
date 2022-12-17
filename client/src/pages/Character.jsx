@@ -71,7 +71,13 @@ export default function Character() {
             </RightWrapper>
           </Wrapper>
           {episodes
-            ? episodes.map((item) => <EpisodeCard data={item} key={item.id} />)
+            ? episodes.map((item) => (
+                <EpisodeCard
+                  data={item}
+                  key={item.id}
+                  href={`/episode/${item.id}`}
+                />
+              ))
             : null}
         </>
       )}
