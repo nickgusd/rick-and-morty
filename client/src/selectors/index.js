@@ -5,6 +5,12 @@ const getLocations = createSelector(
   locations => locations,
 );
 
+export const getEpisodes = createSelector(
+  state => state.locations.episodes,
+  episodes => episodes,
+)
+
 export const rickSelectors = {
   getLocations,
+  getEpisodes
 }; 

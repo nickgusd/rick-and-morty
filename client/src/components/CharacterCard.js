@@ -51,4 +51,8 @@ export const Row = styled.div`
 
 export const ImageWrapper = styled.div`
   margin: 24px 0px;
+
+  & > img {
+    width: 100%;
+  }
 `;

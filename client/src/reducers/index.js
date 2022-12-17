@@ -17,6 +17,9 @@ const { actions, reducer } = createSlice({
     setLocations(state, action) {
       state.locations.locations = action.payload;
     },
+    setEpisodes(state, action) {
+      state.locations.episodes = action.payload;
+    },
     reset() {
       return initialState;
     }

@@ -4,20 +4,23 @@
 import React from "react";
 import { Button } from "semantic-ui-react";
 
+import { Wrapper } from "./Button.js";
+
 const ButtonComponent = ({
   content = "Search",
   onClick,
   primary = false,
-  secondary = false
+  secondary = false,
+  search
 }) => (
-  <div>
+  <Wrapper search={search}>
     <Button
       content={content}
       primary={primary}
       secondary={secondary}
       onClick={onClick}
     />
-  </div>
+  </Wrapper>
 );
 
 export default ButtonComponent;

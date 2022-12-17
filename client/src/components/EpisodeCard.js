@@ -1,6 +1,7 @@
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
-export const Container = styled.div`
+export const Container = styled(Link)`
   display: flex;
   flex-direction: column;
   padding: 14px;
@@ -14,9 +15,9 @@ export const Container = styled.div`
   text-decoration: none;
   color: black;
 
-  //   &:hover {
-  //     background-color: rgba(0, 0, 0, 0.07);
-  //   }
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.07);
+  }
 `;
 
 export const Wrapper = styled.div`

@@ -19,7 +19,7 @@ export const Navbar = () => {
       <SecondWrapper>
         <LinkStyled to="/characters">Characters</LinkStyled>
         <LinkStyled to="/location">Location</LinkStyled>
-        <LinkStyled>Episodes</LinkStyled>
+        <LinkStyled to="/episodes">Episodes</LinkStyled>
       </SecondWrapper>
     </Wrapper>
   );
