@@ -1,10 +1,22 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable prettier/prettier */
 /* eslint-disable react/prop-types */
-import React from 'react';
-import { Button } from 'semantic-ui-react';
+import React from "react";
+import { Button } from "semantic-ui-react";
 
-const ButtonComponent = ({ content = 'Search', onClick }) => (
+const ButtonComponent = ({
+  content = "Search",
+  onClick,
+  primary = false,
+  secondary = false
+}) => (
   <div>
-    <Button content={content} primary onClick={onClick} />
+    <Button
+      content={content}
+      primary={primary}
+      secondary={secondary}
+      onClick={onClick}
+    />
   </div>
 );
 

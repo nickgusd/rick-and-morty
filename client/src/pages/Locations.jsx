@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate, createSearchParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 
 import { CharacterCard } from "../components/CharacterCard.jsx";
@@ -9,7 +9,7 @@ import portal from "../../src/assets/portal.png";
 import { Layout } from "../components/Layout/Layout.jsx";
 import { rickAndMortyActions } from "../reducers/index.js";
 import { rickSelectors } from "../selectors/index.js";
-import PaginationComponent from "../components/Pagination/Pagination";
+import ButtonComponent from "../components/Button/Button.jsx";
 
 export default function Locations() {
   const dispatch = useDispatch();
@@ -19,7 +19,7 @@ export default function Locations() {
   const [character, setCharacters] = useState([]);
   const [index, setIndex] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const [page, setPage] = useState(1);
+  const [loadMore, setLoadMore] = useState(false);
   const id = router.pathname.split("/").pop();
 
   const locations = useSelector(rickSelectors.getLocations) || [];
@@ -29,15 +29,12 @@ export default function Locations() {
       ?.filter((item) => item.residents.length)
       ?.map((item) => item?.id) || [];
 
-  const totalPages = locations?.info?.pages;
-
   useEffect(() => {
     const fetchLocations = () => {
       console.log("fetched");
       fetch(`https://rickandmortyapi.com/api/location`)
         .then((res) => res.json())
         .then((data) => {
-          console.log("locations", data);
           dispatch(rickAndMortyActions.setLocations(data));
         });
     };
@@ -49,12 +46,15 @@ export default function Locations() {
     if (index === hasCharacters.length) {
       setIndex(0);
     }
-    fetch(
-      `https://rickandmortyapi.com/api/location/${id || 1}${router.search}}`
-    )
+
+    if (character.length < 20) {
+      setLoadMore(false);
+    }
+
+    fetch(`https://rickandmortyapi.com/api/location/${id || 1}`)
       .then((res) => res.json())
       .then((response) => {
-        setIsLoading(true);
+        if (id !== "location") setIsLoading(true);
         setData(response);
         Promise.all(response?.residents?.map((u) => fetch(u)))
           .then((responses) => Promise.all(responses.map((res) => res.json())))
@@ -70,16 +70,7 @@ export default function Locations() {
   const handleNavigate = () => {
     setIndex(index + 1);
     navigate({
-      pathname: `/location/${hasCharacters[index]}`,
-      search: `?${createSearchParams({ page: page })}`
-    });
-  };
-
-  const handlePageChange = () => {
-    setPage(page + 1);
-    navigate({
-      pathname: `/location/${hasCharacters[index]}`,
-      search: `?${createSearchParams({ page: page })}`
+      pathname: `/location/${hasCharacters[index]}`
     });
   };
 
@@ -95,12 +86,16 @@ export default function Locations() {
             onClick={handleNavigate}
             style={{ width: "200px", cursor: "pointer" }}
           />
-          <CharacterCard character={character} />
-          <PaginationComponent
-            totalPages={totalPages}
-            onChange={handlePageChange}
-            activePage={page}
-          />
+          <CharacterCard character={character} loadMore={loadMore} />
+          {!loadMore && character?.length > 20 && (
+            <ButtonComponent
+              onClick={() => setLoadMore(!loadMore)}
+              secondary
+              content={"Load More"}
+            >
+              Load More
+            </ButtonComponent>
+          )}
         </>
       ) : (
         <>
