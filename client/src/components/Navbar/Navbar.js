@@ -7,8 +7,12 @@ export const Wrapper = styled.div`
   background: #20232a;
   display: flex;
   gap: 14px;
-  padding: 8px;
+  padding: 14px;
   justify-content: space-between;
+  width: 100vw;
+  position: fixed;
+  z-index: 100;
+  // align-items: center;
 `;
 
 export const InnerWrapper = styled.div`

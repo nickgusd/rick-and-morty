@@ -10,7 +10,14 @@ export const getEpisodes = createSelector(
   episodes => episodes,
 )
 
+export const getSidebarState = createSelector(
+  state => state.locations.sidebar,
+  sidebar => sidebar,
+)
+
+
 export const rickSelectors = {
   getLocations,
-  getEpisodes
+  getEpisodes,
+  getSidebarState
 }; 

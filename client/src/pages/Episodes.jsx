@@ -4,6 +4,7 @@ import { rickAndMortyActions } from "../reducers/index.js";
 import { rickSelectors } from "../selectors/index.js";
 
 import { EpisodeCard } from "../components/EpisodeCard.jsx";
+import { Layout } from "../components/Layout/Layout.jsx";
 
 export default function Episodes() {
   const dispatch = useDispatch();
@@ -20,13 +21,13 @@ export default function Episodes() {
   }, []);
 
   return (
-    <div>
-      <div style={{ padding: "24px" }}>
+    <Layout>
+      <div>
         <h1>Episodes</h1>
       </div>
       {episodes?.results?.map((item) => (
         <EpisodeCard data={item} key={item.id} href={`/episode/${item.id}`} />
       ))}
-    </div>
+    </Layout>
   );
 }

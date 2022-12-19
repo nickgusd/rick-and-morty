@@ -1,21 +1,23 @@
 /* eslint-disable prettier/prettier */
+import { Routes, Route } from "react-router-dom";
+
 import Locations from "../pages/Locations";
 import Characters from "../pages/Characters";
 import Character from "../pages/Character";
-import { Navbar } from "./Navbar/Navbar.jsx";
 import Episodes from "../pages/Episodes";
 import Episode from "../pages/Episode";
 
+import { Navbar } from "./Navbar/Navbar.jsx";
+import { Sidebar } from "./Sidebar/Sidebar.jsx";
 import { Container } from "./Main";
-
-import { Routes, Route } from "react-router-dom";
 
 export default function Main() {
   return (
     <Container>
       <Navbar />
+      <Sidebar />
       <Routes>
-        <Route path="/" element={<Locations />} />
+        <Route path="/" element={<Characters />} />
         <Route path="location" element={<Locations />} />
         <Route path="location/:id" element={<Locations />} />
         <Route path="characters" element={<Characters />} />

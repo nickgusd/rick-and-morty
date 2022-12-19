@@ -2,10 +2,13 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { CharacterCard } from "../components/CharacterCard.jsx";
+import LoaderComponent from "../components/Loader/Loader.jsx";
+import { Layout } from "../components/Layout/Layout.jsx";
 
 export default function Episode() {
   const location = useLocation();
   const [episode, setEpisode] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [characters, setCharacters] = useState([]);
   const id = location.pathname.split("/").pop();
 
@@ -14,26 +17,31 @@ export default function Episode() {
       .then((res) => res.json())
       .then((response) => {
         setEpisode(response);
+        setIsLoading(true);
         Promise.all(
           response?.characters?.map((item) => {
             return fetch(item).then((res) => res.json());
           })
-        ).then((res) => setCharacters(res));
+        )
+          .then((res) => setCharacters(res))
+          .catch((err) => console.log(err))
+          .finally(() => setTimeout(() => setIsLoading(false), 200));
       });
   }, [location]);
 
   console.log("episodes", episode);
 
   return (
-    <div>
-      {Object.keys(episode).length && (
+    <Layout>
+      {isLoading && <LoaderComponent />}
+      {Object.keys(episode).length && !isLoading && (
         <>
           <h1>{episode.name}</h1>
           <div>{episode.episode}</div>
           <div>{episode.air_date}</div>
         </>
       )}
-      <CharacterCard character={characters} />
-    </div>
+      {!isLoading && <CharacterCard character={characters} />}
+    </Layout>
   );
 }

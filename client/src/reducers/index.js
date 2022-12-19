@@ -7,7 +7,8 @@ const initialState = {
     data: {}
   },
   characters: [],
-  episodes: []
+  episodes: [],
+  sidebar: false,
 };
 
 const { actions, reducer } = createSlice({
@@ -19,6 +20,9 @@ const { actions, reducer } = createSlice({
     },
     setEpisodes(state, action) {
       state.locations.episodes = action.payload;
+    },
+    setSidebar(state, action) {
+      state.locations.sidebar = action.payload;
     },
     reset() {
       return initialState;
