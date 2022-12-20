@@ -30,9 +30,19 @@ export const Navbar = () => {
       </InnerWrapper>
       <SecondWrapper>
         {!sidebarOpen ? (
-          <FiMenu color="white" size="2em" onClick={handleClick} />
+          <FiMenu
+            color="white"
+            size="2em"
+            onClick={handleClick}
+            style={{ cursor: "pointer" }}
+          />
         ) : (
-          <FiX color="white" size="2em" onClick={handleClick} />
+          <FiX
+            color="white"
+            size="2em"
+            onClick={handleClick}
+            style={{ cursor: "pointer" }}
+          />
         )}
       </SecondWrapper>
     </Wrapper>
