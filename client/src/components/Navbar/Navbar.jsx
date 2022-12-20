@@ -1,4 +1,5 @@
 /* eslint-disable prettier/prettier */
+
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { rickAndMortyActions } from "../../reducers/index";
@@ -6,15 +7,14 @@ import { rickSelectors } from "../../selectors/index";
 
 import { Wrapper, InnerWrapper, SecondWrapper } from "./Navbar.js";
 import Rick from "../../assets/rick_sanchez2.svg";
-import { FiMenu } from "react-icons/fi";
+import { FiMenu, FiX } from "react-icons/fi";
 
 export const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const sidebarOpen = useSelector(rickSelectors.getSidebarState) || false;
+  const sidebarOpen = useSelector(rickSelectors.getSidebarState);
 
-  const handleClick = (event) => {
-    console.log("event", event);
+  const handleClick = () => {
     dispatch(rickAndMortyActions.setSidebar(!sidebarOpen));
   };
 
@@ -29,10 +29,11 @@ export const Navbar = () => {
         />
       </InnerWrapper>
       <SecondWrapper>
-        <FiMenu color="white" size="2em" onClick={handleClick} />
-        {/* <LinkStyled to="/characters">Characters</LinkStyled>
-        <LinkStyled to="/location">Location</LinkStyled>
-        <LinkStyled to="/episodes">Episodes</LinkStyled> */}
+        {!sidebarOpen ? (
+          <FiMenu color="white" size="2em" onClick={handleClick} />
+        ) : (
+          <FiX color="white" size="2em" onClick={handleClick} />
+        )}
       </SecondWrapper>
     </Wrapper>
   );

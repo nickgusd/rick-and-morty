@@ -1,12 +1,13 @@
 /* eslint-disable prettier/prettier */
+
 import { Wrapper, LinkWrapper } from "./Sidebar";
 import { useSelector } from "react-redux";
 import { rickSelectors } from "../../selectors/index";
 import { LinkStyled } from "../Navbar/Navbar";
 
 export const Sidebar = () => {
-  const sidebarOpen = useSelector(rickSelectors.getSidebarState) || false;
-  console.log("test", sidebarOpen);
+  const sidebarOpen = useSelector(rickSelectors.getSidebarState);
+
   return (
     sidebarOpen && (
       <Wrapper>
