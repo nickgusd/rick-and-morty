@@ -14,6 +14,8 @@ export const Navbar = () => {
   const dispatch = useDispatch();
   const sidebarOpen = useSelector(rickSelectors.getSidebarState);
 
+  console.log("");
+
   const handleClick = () => {
     dispatch(rickAndMortyActions.setSidebar(!sidebarOpen));
   };
