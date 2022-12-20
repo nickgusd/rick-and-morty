@@ -29,8 +29,11 @@ export const SecondWrapper = styled.div`
 export const LinkStyled = styled(Link)`
   color: white;
   text-decoration: none;
+  padding: 14px;
 
   &:hover {
+    background-color: #5c5c62;
+    border-radius: 8px;
     color: #2185d0;
   }
 `;
