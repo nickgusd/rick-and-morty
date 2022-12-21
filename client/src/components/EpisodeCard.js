@@ -18,6 +18,10 @@ export const Container = styled(Link)`
   &:hover {
     background-color: rgba(0, 0, 0, 0.07);
   }
+
+  @media (max-width: 767px) {
+    width: 100%;
+  }
 `;
 
 export const Wrapper = styled.div`

@@ -85,7 +85,7 @@ export default function Characters() {
       {isLoading ? (
         <Loader />
       ) : (
-        <div onKeyDown={keyDownHandler} style={{ padding: "24px" }}>
+        <div onKeyDown={keyDownHandler}>
           <SearchWrapper>
             <Search isLoading={false} onChange={handleChange} />
             <ButtonComponent onClick={handleClick} primary={true} search />

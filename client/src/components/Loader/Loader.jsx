@@ -2,7 +2,7 @@
 // import CircularProgress from '@mui/material/CircularProgress';
 // import Box from '@mui/material/Box';
 
-import { Dimmer, Loader, Image } from 'semantic-ui-react';
+import { Dimmer, Loader, Image } from "semantic-ui-react";
 
 const LoaderComponent = () => (
   <div>

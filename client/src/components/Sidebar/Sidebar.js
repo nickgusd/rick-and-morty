@@ -13,6 +13,15 @@ export const Wrapper = styled.div`
   transition-property: width;
   transition-duration: 4s;
   transition-delay: 2s;
+
+  @media (max-width: 1439px) {
+    width: 100%;
+    left: unset;
+  }
+
+  @media (max-width: 767px) {
+    // position: unset;
+  }
 `;
 
 export const LinkWrapper = styled.div`

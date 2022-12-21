@@ -12,6 +12,20 @@ export const Wrapper = styled.div`
     border-top-left-radius: 8px;
     border-bottom-left-radius: 8px;
   }
+
+  @media (max-width: 1439px) {
+    flex-direction: column;
+
+    & > img {
+      border-top-left-radius: 8px;
+      border-top-right-radius: 8px;
+      border-bottom-left-radius: unset;
+    }
+  }
+
+  @media (max-width: 767px) {
+    width: 100%;
+  }
 `;
 
 export const RightWrapper = styled.div`

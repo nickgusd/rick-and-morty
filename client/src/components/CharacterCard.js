@@ -4,10 +4,21 @@ import { Link } from 'react-router-dom';
 export const Wrapper = styled.div`
   padding: 14px;
   display: grid;
-  grid-template-columns: minmax(200px, 1fr) minmax(200px, 1fr) minmax(200px, 1fr);
+  grid-template-columns: minmax(200px, 1fr) minmax(200px, 1fr) minmax(
+      200px,
+      1fr
+    );
   grid-template-rows: auto;
   grid-column-gap: 14px;
   gid-row-gap: 14px;
+
+  @media (max-width: 1439px) {
+    grid-template-columns: minmax(200px, 1fr) minmax(200px, 1fr);
+  }
+
+  @media (max-width: 767px) {
+    grid-template-columns: minmax(200px, 1fr);
+  }
 `;
 
 export const Character = styled(Link)`
