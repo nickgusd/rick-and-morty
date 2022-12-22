@@ -25,7 +25,10 @@ export const Navbar = () => {
           src={Rick}
           alt="rick"
           style={{ width: "24px", cursor: "pointer" }}
-          onClick={() => navigate("/characters")}
+          onClick={() => {
+            dispatch(rickAndMortyActions.setSidebar(false));
+            navigate("/characters");
+          }}
         />
       </InnerWrapper>
       <SecondWrapper>
