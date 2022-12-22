@@ -51,20 +51,24 @@ export default function Locations() {
       setLoadMore(false);
     }
 
-    fetch(`https://rickandmortyapi.com/api/location/${id || 1}`)
-      .then((res) => res.json())
-      .then((response) => {
-        if (id !== "location") setIsLoading(true);
-        setData(response);
-        Promise.all(response?.residents?.map((u) => fetch(u)))
-          .then((responses) => Promise.all(responses.map((res) => res.json())))
-          .then((texts) => {
-            setCharacters(texts);
-          })
-          .finally(() => {
-            setTimeout(() => setIsLoading(false), 200);
-          });
-      });
+    if (id !== "location") {
+      fetch(`https://rickandmortyapi.com/api/location/${id || 1}`)
+        .then((res) => res.json())
+        .then((response) => {
+          if (id !== "location") setIsLoading(true);
+          setData(response);
+          Promise.all(response?.residents?.map((u) => fetch(u)))
+            .then((responses) =>
+              Promise.all(responses.map((res) => res.json()))
+            )
+            .then((texts) => {
+              setCharacters(texts);
+            })
+            .finally(() => {
+              setTimeout(() => setIsLoading(false), 200);
+            });
+        });
+    }
   }, [index, router]);
 
   const handleNavigate = () => {

@@ -29,8 +29,6 @@ export default function Episode() {
       });
   }, [location]);
 
-  console.log("episodes", episode);
-
   return (
     <Layout>
       {isLoading && <LoaderComponent />}
