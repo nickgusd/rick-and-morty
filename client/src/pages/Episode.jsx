@@ -32,14 +32,14 @@ export default function Episode() {
   return (
     <Layout>
       {isLoading && <LoaderComponent />}
-      {Object.keys(episode).length && !isLoading && (
+      {Object.keys(episode).length && !isLoading ? (
         <>
           <h1>{episode.name}</h1>
           <div>{episode.episode}</div>
           <div>{episode.air_date}</div>
         </>
-      )}
-      {!isLoading && <CharacterCard character={characters} />}
+      ) : null}
+      {!isLoading ? <CharacterCard character={characters} /> : null}
     </Layout>
   );
 }

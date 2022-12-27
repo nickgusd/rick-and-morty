@@ -43,7 +43,7 @@ export default function Character() {
     <Layout>
       {isLoading ? (
         <LoaderComponent />
-      ) : (
+      ) : Object.keys(character).length ? (
         <>
           <Wrapper>
             <img src={character?.image} />
@@ -70,7 +70,7 @@ export default function Character() {
               </GridWrapper>
             </RightWrapper>
           </Wrapper>
-          {episodes
+          {episodes.length
             ? episodes.map((item) => (
                 <EpisodeCard
                   data={item}
@@ -80,7 +80,7 @@ export default function Character() {
               ))
             : null}
         </>
-      )}
+      ) : null}
     </Layout>
   );
 }
