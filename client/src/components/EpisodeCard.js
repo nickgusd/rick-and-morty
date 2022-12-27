@@ -21,6 +21,10 @@ export const Container = styled(Link)`
 
   @media (max-width: 767px) {
     width: 100%;
+
+    & > div > h2 {
+      font-size: 14px;
+    }
   }
 `;
 
