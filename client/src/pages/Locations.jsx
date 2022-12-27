@@ -31,7 +31,6 @@ export default function Locations() {
 
   useEffect(() => {
     const fetchLocations = () => {
-      console.log("fetched");
       fetch(`https://rickandmortyapi.com/api/location`)
         .then((res) => res.json())
         .then((data) => {
