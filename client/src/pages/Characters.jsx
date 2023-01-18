@@ -9,8 +9,11 @@ import Search from "../components/Search/Search.jsx";
 import { SearchWrapper, ImageWrapper } from "../components/CharacterCard.js";
 import PaginationComponent from "../components/Pagination/Pagination.jsx";
 import { Layout } from "../components/Layout/Layout.jsx";
+import { Filter, } from "../components/Filter/Filter.jsx";
+import { FilterContainer } from "../components/Filter/Filter.js";
 
 import RickToilet from "../assets/rick_and_morty_toilet.png";
+import { title } from "../utils/string.js";
 
 export default function Characters() {
   const navigate = useNavigate();
@@ -38,9 +41,10 @@ export default function Characters() {
         .catch((error) => setError(error))
         .finally(() => setTimeout(() => setIsLoading(false), 200));
     };
+    
 
     fetchData();
-  }, [search]);
+  }, [search, location.search]);
 
   const onSearch = () => {
     setSearch(!search);
@@ -73,11 +77,49 @@ export default function Characters() {
     navigate({
       pathname: "/characters",
       search: `?${createSearchParams({
-        name: inputData,
+        ...parse,
         page: activePage
       })}`
     });
   };
+
+  const handleGenderFilter = (event) => {
+    navigate({
+      pathname: '/characters',
+      search:
+        `?${createSearchParams({
+            ...parse,
+            gender: event.target.innerText.toLowerCase(),
+        })}`,
+    });
+  };
+
+  const handleStatusChange = (event) => {
+    navigate({
+      pathname: '/characters',
+      search:
+        `?${createSearchParams({
+            ...parse,
+            status: event.target.innerText.toLowerCase(),
+        })}`,
+    });
+  }
+
+  const genderOptions = [
+    { key: 1, text: 'Male', value: 'male' },
+    { key: 2, text: 'Female', value: 'female' },
+    { key: 3, text: 'Unknown', value: 'unknown' },
+    { key: 4, text: 'Genderless', value: 'Genderless' }
+  ];
+
+  const statusOptions = [
+    { key: 1, text: 'Alive', value: 'alive' },
+    { key: 2, text: 'Dead', value: 'dead' },
+    { key: 3, text: 'Unknown', value: 'unknown' },
+    
+  ];
+
+  console.log("params", params)
 
   return (
     <Layout noResults={data.error && !error}>
@@ -86,13 +128,17 @@ export default function Characters() {
         <Loader />
       ) : (
         <div onKeyDown={keyDownHandler}>
-          <SearchWrapper>
-            <Search isLoading={false} onChange={handleChange} />
-            <ButtonComponent onClick={handleClick} primary={true} search />
-          </SearchWrapper>
+            <SearchWrapper>
+              <Search isLoading={false} onChange={handleChange} />
+              <ButtonComponent onClick={handleClick} primary={true} search />
+            </SearchWrapper>
+          <FilterContainer>
+            <Filter  onChange={handleGenderFilter} currentValue={title(parse.gender)} options={genderOptions} type="Gender"/>
+            <Filter  onChange={handleStatusChange} currentValue={title(parse.status)} options={statusOptions} type="Status"/>
+          </FilterContainer>
           {!data.error && data && (
             <>
-              <CharacterCard character={data.results} />
+              <CharacterCard character={data.results} /> 
               <PaginationComponent
                 totalPages={data?.info?.pages || 0}
                 onChange={onPageChange}

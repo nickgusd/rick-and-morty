@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 export const Wrapper = styled.div`
   padding: 14px;
@@ -57,7 +57,7 @@ export const Row = styled.div`
   flex-direction: row;
   gap: 8px;
   justify-content: flex-start;
-  width: ${(props) => (props.character ? '60%' : null)};
+  width: ${(props) => (props.character ? "60%" : null)};
 `;
 
 export const ImageWrapper = styled.div`
