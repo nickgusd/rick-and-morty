@@ -1,9 +1,15 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import PropTypes from "prop-types";
 
-import { Dropdown, Menu } from 'semantic-ui-react';
+import { Dropdown, Menu } from "semantic-ui-react";
 
-const DropdownComponent = ({ onChange, options, currentValue, type }) => {
+const DropdownComponent = ({
+  onChange,
+  options,
+  currentValue,
+  type,
+  value,
+}) => {
   return (
     <Menu compact>
       <Dropdown
@@ -12,6 +18,7 @@ const DropdownComponent = ({ onChange, options, currentValue, type }) => {
         simple
         item
         onChange={onChange}
+        value={value}
       />
     </Menu>
   );
@@ -23,5 +30,6 @@ DropdownComponent.propTypes = {
   onChange: PropTypes.func,
   options: PropTypes.array,
   currentValue: PropTypes.string,
-  type: PropTypes.string
+  type: PropTypes.string,
+  value: PropTypes.string,
 };

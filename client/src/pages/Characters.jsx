@@ -29,11 +29,15 @@ export default function Characters() {
   const [urlParams, setUrlParams] = useState(null);
   const [error, setError] = useState(null);
   const [page, setPage] = useState(0);
+  const [gender, setGender] = useState(null);
+  const [status, setStatus] = useState(null);
   const parse = queryString.parse(location.search);
   const params = urlParams || { name: inputData };
 
   useEffect(() => {
     setUrlParams(parse);
+    setGender(null);
+    setStatus(null);
     const fetchData = () => {
       fetch(`https://rickandmortyapi.com/api/character${location.search}`)
         .then((res) => res.json())
@@ -85,7 +89,8 @@ export default function Characters() {
     });
   };
 
-  const handleGenderFilter = (event) => {
+  const handleGenderFilter = (event, { value }) => {
+    setGender(value);
     navigate({
       pathname: "/characters",
       search: `?${createSearchParams({
@@ -95,7 +100,8 @@ export default function Characters() {
     });
   };
 
-  const handleStatusChange = (event) => {
+  const handleStatusChange = (event, { value }) => {
+    setStatus(value);
     navigate({
       pathname: "/characters",
       search: `?${createSearchParams({
@@ -131,12 +137,14 @@ export default function Characters() {
             currentValue={title(parse.gender)}
             options={genderOptions}
             type="Gender"
+            value={gender}
           />
           <Filter
             onChange={handleStatusChange}
             currentValue={title(parse.status)}
             options={statusOptions}
             type="Status"
+            value={status}
           />
         </Flex>
       </FilterContainer>
@@ -153,24 +161,6 @@ export default function Characters() {
         <Loader />
       ) : (
         <div>
-          {/* <SearchWrapper>
-            <Search isLoading={false} onChange={handleChange} />
-            <ButtonComponent onClick={handleClick} primary={true} search />
-          </SearchWrapper> */}
-          {/* <FilterContainer>
-            <Filter
-              onChange={handleGenderFilter}
-              currentValue={title(parse.gender)}
-              options={genderOptions}
-              type="Gender"
-            />
-            <Filter
-              onChange={handleStatusChange}
-              currentValue={title(parse.status)}
-              options={statusOptions}
-              type="Status"
-            />
-          </FilterContainer> */}
           {!data.error && data && (
             <>
               <CharacterCard character={data.results} />
