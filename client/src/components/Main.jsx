@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { Routes, Route } from "react-router-dom";
 
 import Locations from "../pages/Locations";

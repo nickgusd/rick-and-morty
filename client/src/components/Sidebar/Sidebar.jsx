@@ -1,5 +1,3 @@
-/* eslint-disable prettier/prettier */
-
 import { Wrapper, LinkWrapper } from "./Sidebar";
 import { useSelector, useDispatch } from "react-redux";
 import { rickSelectors } from "../../selectors/index";

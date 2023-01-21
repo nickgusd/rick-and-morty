@@ -1,6 +1,4 @@
 /* eslint-disable react/prop-types */
-/* eslint-disable prettier/prettier */
-// import { Chip } from './Chip/Chip.jsx';
 
 import Badge from "react-bootstrap/Badge";
 
@@ -24,7 +22,7 @@ export const CharacterCard = ({ character, loadMore }) => {
                     display: "flex",
                     alignItems: "center",
                     border: "1px solid #6d757d",
-                    color: "#6d757d"
+                    color: "#6d757d",
                   }}
                 >
                   {item.species}
@@ -36,7 +34,7 @@ export const CharacterCard = ({ character, loadMore }) => {
                     display: "flex",
                     alignItems: "center",
                     border: "1px solid #6d757d",
-                    color: "#6d757d"
+                    color: "#6d757d",
                   }}
                 >
                   {item.gender}

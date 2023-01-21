@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { CharacterCard } from "../components/CharacterCard.jsx";

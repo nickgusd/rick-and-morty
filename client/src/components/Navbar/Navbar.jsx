@@ -1,5 +1,3 @@
-/* eslint-disable prettier/prettier */
-
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { rickAndMortyActions } from "../../reducers/index";

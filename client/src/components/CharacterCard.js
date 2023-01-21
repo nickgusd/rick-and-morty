@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 export const Wrapper = styled.div`
   padding: 14px;
@@ -43,7 +43,7 @@ export const SearchWrapper = styled.div`
   flex-direction: row;
   gap: 8px;
   justify-content: center;
-  margin-top: 14px;
+  align-items: center;
 `;
 
 export const TextWrapper = styled.div`
@@ -57,7 +57,7 @@ export const Row = styled.div`
   flex-direction: row;
   gap: 8px;
   justify-content: flex-start;
-  width: ${(props) => (props.character ? '60%' : null)};
+  width: ${(props) => (props.character ? "60%" : null)};
 `;
 
 export const ImageWrapper = styled.div`
@@ -67,3 +67,7 @@ export const ImageWrapper = styled.div`
     width: 100%;
   }
 `;
+
+export const Header = styled.div`
+  padding: 24px;
+`

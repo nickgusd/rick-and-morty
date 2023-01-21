@@ -1,4 +1,4 @@
-import {  createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 // import { serializeError } from '../utils/serializeError';
 // import Axios from "axios";
 
@@ -8,7 +8,7 @@ const initialState = {
   },
   characters: [],
   episodes: [],
-  sidebar: false,
+  sidebar: false
 };
 
 const { actions, reducer } = createSlice({
@@ -34,4 +34,4 @@ export const rickAndMortyActions = {
   ...actions
 };
 
-export default reducer; 
+export default reducer;

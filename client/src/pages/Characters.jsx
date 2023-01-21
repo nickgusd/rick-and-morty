@@ -6,11 +6,18 @@ import ButtonComponent from "../components/Button/Button.jsx";
 import { CharacterCard } from "../components/CharacterCard.jsx";
 import Loader from "../components/Loader/Loader.jsx";
 import Search from "../components/Search/Search.jsx";
-import { SearchWrapper, ImageWrapper } from "../components/CharacterCard.js";
+import {
+  SearchWrapper,
+  ImageWrapper,
+  Header,
+} from "../components/CharacterCard.js";
 import PaginationComponent from "../components/Pagination/Pagination.jsx";
 import { Layout } from "../components/Layout/Layout.jsx";
+import { Filter } from "../components/Filter/Filter.jsx";
+import { FilterContainer, Flex } from "../components/Filter/Filter.js";
 
 import RickToilet from "../assets/rick_and_morty_toilet.png";
+import { title } from "../utils/string.js";
 
 export default function Characters() {
   const navigate = useNavigate();
@@ -40,13 +47,13 @@ export default function Characters() {
     };
 
     fetchData();
-  }, [search]);
+  }, [search, location.search]);
 
   const onSearch = () => {
     setSearch(!search);
     navigate({
       pathname: "/characters",
-      search: `?${createSearchParams(params)}`
+      search: `?${createSearchParams(params)}`,
     });
     setPage(1);
   };
@@ -66,30 +73,104 @@ export default function Characters() {
     }
   };
 
-  // eslint-disable-next-line no-unused-vars
   const onPageChange = (e, { activePage }) => {
     setPage(activePage);
     setSearch(!search);
     navigate({
       pathname: "/characters",
       search: `?${createSearchParams({
-        name: inputData,
-        page: activePage
-      })}`
+        ...parse,
+        page: activePage,
+      })}`,
     });
   };
 
+  const handleGenderFilter = (event) => {
+    navigate({
+      pathname: "/characters",
+      search: `?${createSearchParams({
+        ...parse,
+        gender: event.target.innerText.toLowerCase(),
+      })}`,
+    });
+  };
+
+  const handleStatusChange = (event) => {
+    navigate({
+      pathname: "/characters",
+      search: `?${createSearchParams({
+        ...parse,
+        status: event.target.innerText.toLowerCase(),
+      })}`,
+    });
+  };
+
+  const genderOptions = [
+    { key: 1, text: "Male", value: "male" },
+    { key: 2, text: "Female", value: "female" },
+    { key: 3, text: "Unknown", value: "unknown" },
+    { key: 4, text: "Genderless", value: "Genderless" },
+  ];
+
+  const statusOptions = [
+    { key: 1, text: "Alive", value: "alive" },
+    { key: 2, text: "Dead", value: "dead" },
+    { key: 3, text: "Unknown", value: "unknown" },
+  ];
+
   return (
-    <Layout noResults={data.error && !error}>
-      {data.error && !error ? <h1>No Results Found</h1> : <h1>Characters</h1>}
+    <Layout noResults={data.error && !error} characters>
+      <FilterContainer onKeyDown={keyDownHandler}>
+        <SearchWrapper>
+          <Search isLoading={false} onChange={handleChange} />
+          <ButtonComponent onClick={handleClick} primary={true} search />
+        </SearchWrapper>
+        <Flex isMobile>
+          <Filter
+            onChange={handleGenderFilter}
+            currentValue={title(parse.gender)}
+            options={genderOptions}
+            type="Gender"
+          />
+          <Filter
+            onChange={handleStatusChange}
+            currentValue={title(parse.status)}
+            options={statusOptions}
+            type="Status"
+          />
+        </Flex>
+      </FilterContainer>
+      {data.error && !error ? (
+        <Header>
+          <h1>No Results Found</h1>
+        </Header>
+      ) : (
+        <Header>
+          <h1>Characters</h1>
+        </Header>
+      )}
       {isLoading ? (
         <Loader />
       ) : (
-        <div onKeyDown={keyDownHandler}>
-          <SearchWrapper>
+        <div>
+          {/* <SearchWrapper>
             <Search isLoading={false} onChange={handleChange} />
             <ButtonComponent onClick={handleClick} primary={true} search />
-          </SearchWrapper>
+          </SearchWrapper> */}
+          {/* <FilterContainer>
+            <Filter
+              onChange={handleGenderFilter}
+              currentValue={title(parse.gender)}
+              options={genderOptions}
+              type="Gender"
+            />
+            <Filter
+              onChange={handleStatusChange}
+              currentValue={title(parse.status)}
+              options={statusOptions}
+              type="Status"
+            />
+          </FilterContainer> */}
           {!data.error && data && (
             <>
               <CharacterCard character={data.results} />
