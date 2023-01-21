@@ -43,7 +43,7 @@ export const SearchWrapper = styled.div`
   flex-direction: row;
   gap: 8px;
   justify-content: center;
-  margin-top: 14px;
+  align-items: center;
 `;
 
 export const TextWrapper = styled.div`
@@ -67,3 +67,7 @@ export const ImageWrapper = styled.div`
     width: 100%;
   }
 `;
+
+export const Header = styled.div`
+  padding: 24px;
+`

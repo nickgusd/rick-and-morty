@@ -1,11 +1,8 @@
-/* eslint-disable prettier/prettier */
 /* eslint-disable react/prop-types */
 import React from "react";
 import { Pagination } from "semantic-ui-react";
-// import { useMediaQuery } from "react-responsive";
 
 const PaginationComponent = ({ totalPages, onChange, activePage }) => {
-  // const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
   if (totalPages <= 1) return null;
 
   return (

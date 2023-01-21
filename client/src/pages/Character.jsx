@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 
@@ -10,7 +9,7 @@ import {
   GridRow,
   RightWrapper,
   GridWrapper,
-  Header
+  Header,
 } from "../components/Character.js";
 
 export default function Character() {
