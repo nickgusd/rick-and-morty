@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -73,7 +72,7 @@ export default function Locations() {
   const handleNavigate = () => {
     setIndex(index + 1);
     navigate({
-      pathname: `/location/${hasCharacters[index]}`
+      pathname: `/location/${hasCharacters[index]}`,
     });
   };
 
