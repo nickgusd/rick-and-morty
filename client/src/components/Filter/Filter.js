@@ -9,6 +9,10 @@ export const FilterContainer = styled.div`
   gap: 14px;
   justify-content: center;
   box-shadow: 0 2px 4px rgb(0 0 0 / 20%);
+  position: sticky;
+  top: 0px;
+  z-index: 100;
+  background: white;
 
   @media (max-width: 767px) {
     flex-direction: column;

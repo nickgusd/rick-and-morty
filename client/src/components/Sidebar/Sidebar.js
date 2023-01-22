@@ -5,7 +5,7 @@ export const Wrapper = styled.div`
   height: Calc(100lvh);
   width: 300px;
   left: Calc(100% - 300px);
-  z-index: 10;
+  z-index: 200;
   background: white;
   overflow-y: scroll;
   padding: 60px 14px;
