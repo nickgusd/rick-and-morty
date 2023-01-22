@@ -9,11 +9,9 @@ export const Wrapper = styled.div`
   gap: 14px;
   padding: 14px;
   justify-content: space-between;
-  // width: 100vw;
   position: sticky;
   top: 0px;
   z-index: 100;
-  // align-items: center;
 `;
 
 export const InnerWrapper = styled.div`
