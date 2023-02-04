@@ -95,7 +95,7 @@ export default function Characters() {
       pathname: "/characters",
       search: `?${createSearchParams({
         ...parse,
-        gender: event.target.innerText.toLowerCase(),
+        gender: value,
       })}`,
     });
   };
@@ -106,7 +106,7 @@ export default function Characters() {
       pathname: "/characters",
       search: `?${createSearchParams({
         ...parse,
-        status: event.target.innerText.toLowerCase(),
+        status: value,
       })}`,
     });
   };
@@ -115,7 +115,7 @@ export default function Characters() {
     { key: 1, text: "Male", value: "male" },
     { key: 2, text: "Female", value: "female" },
     { key: 3, text: "Unknown", value: "unknown" },
-    { key: 4, text: "Genderless", value: "Genderless" },
+    { key: 4, text: "Genderless", value: "genderless" },
   ];
 
   const statusOptions = [

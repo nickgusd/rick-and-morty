@@ -1,6 +1,11 @@
 import styled from "styled-components";
 
-export const Wrapper = styled.div``;
+export const Wrapper = styled.div`
+& > div > div > div {
+  color: black !important;
+}
+
+`;
 
 export const FilterContainer = styled.div`
   padding: 24px 0px;
