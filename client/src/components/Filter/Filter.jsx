@@ -24,3 +24,4 @@ Filter.propTypes = {
   type: PropTypes.string,
   value: PropTypes.string,
 };
+ 

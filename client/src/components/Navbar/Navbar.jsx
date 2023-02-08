@@ -3,9 +3,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { rickAndMortyActions } from "../../reducers/index";
 import { rickSelectors } from "../../selectors/index";
 
-import { Wrapper, InnerWrapper, SecondWrapper } from "./Navbar.js";
+import { Wrapper, InnerWrapper, SecondWrapper, CloseStyled, MenuStyled, ImageStyled } from "./Navbar.js";
 import Rick from "../../assets/rick_sanchez2.svg";
-import { FiMenu, FiX } from "react-icons/fi";
 
 export const Navbar = () => {
   const navigate = useNavigate();
@@ -19,10 +18,9 @@ export const Navbar = () => {
   return (
     <Wrapper>
       <InnerWrapper>
-        <img
+        <ImageStyled
           src={Rick}
           alt="rick"
-          style={{ width: "24px", cursor: "pointer" }}
           onClick={() => {
             dispatch(rickAndMortyActions.setSidebar(false));
             navigate("/characters");
@@ -31,21 +29,20 @@ export const Navbar = () => {
       </InnerWrapper>
       <SecondWrapper>
         {!sidebarOpen ? (
-          <FiMenu
+          <MenuStyled
             color="white"
             size="2em"
             onClick={handleClick}
-            style={{ cursor: "pointer" }}
           />
         ) : (
-          <FiX
+          <CloseStyled
             color="white"
             size="2em"
             onClick={handleClick}
-            style={{ cursor: "pointer" }}
           />
         )}
       </SecondWrapper>
     </Wrapper>
   );
 };
+ 

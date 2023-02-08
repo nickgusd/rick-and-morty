@@ -19,9 +19,6 @@ export const Wrapper = styled.div`
     left: unset;
   }
 
-  @media (max-width: 767px) {
-    // position: unset;
-  }
 `;
 
 export const LinkWrapper = styled.div`

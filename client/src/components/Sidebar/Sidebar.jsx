@@ -10,12 +10,12 @@ export const Sidebar = () => {
 
   const handleClick = (e) => {
     e.preventDefault();
-    dispatch(rickAndMortyActions.setSidebar(false));
+    dispatch(rickAndMortyActions.setSidebar(!sidebarOpen));
   };
 
   return (
     sidebarOpen && (
-      <Wrapper>
+      <Wrapper sidebarOpen={sidebarOpen}>
         <LinkWrapper onClick={handleClick}>
           <LinkStyled to="/characters">Characters</LinkStyled>
           <LinkStyled to="/location">Location</LinkStyled>

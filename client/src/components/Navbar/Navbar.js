@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 
+import { FiX, FiMenu } from "react-icons/fi";
 import { Link } from 'react-router-dom';
 
 export const Wrapper = styled.div`
@@ -36,3 +37,37 @@ export const LinkStyled = styled(Link)`
     color: #2185d0;
   }
 `;
+
+export const MenuStyled = styled(FiMenu)`
+  cursor: pointer;
+  transition-property: transform-scale;
+  transition-duration: 4s;
+  transition-delay: 2s;
+
+  &:hover {
+    transform: scale(1.2);
+  }
+`
+
+export const CloseStyled = styled(FiX)`
+  cursor: pointer;
+  transition-property: transform-scale;
+  transition-duration: 4s;
+  transition-delay: 2s;
+
+  &:hover {
+    transform: scale(1.2);
+  }
+`
+
+export const ImageStyled = styled.img`
+  width: 24px;
+  cursor: pointer;
+  transition-duration: 4s;
+  transition-delay: 2s;
+  transition-property: transform-scale;
+  
+  &:hover {
+  transform: scale(1.2);
+}
+`
