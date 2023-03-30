@@ -25,13 +25,9 @@ import { title } from "../utils/string.js";
 export default function Characters() {
   const navigate = useNavigate();
   const location = useLocation();
-  // const [data, setData] = useState([]);
-  // const [isLoading, setIsLoading] = useState(false);
-  const [response, setResponse] = useState([]);
   const [inputData, setInputData] = useState("");
   const [search, setSearch] = useState(false);
   const [urlParams, setUrlParams] = useState(null);
-  // const [error, setError] = useState(null);
   const [page, setPage] = useState(0);
   const [gender, setGender] = useState(null);
   const [status, setStatus] = useState(null);
@@ -91,18 +87,8 @@ export default function Characters() {
     if (parse.page) {
       parse.page = Number(parse.page);
     }
-    refetch(parse); // Trigger the query with the new parameter
 
-    //This is the old Rest API fetch
-    // fetch(`https://rickandmortyapi.com/api/character${location.search}`)
-    //   .then((res) => res.json())
-    //   .then((response) => {
-    //     setIsLoading(true);
-    //     setData(response);
-    //     setUrlParams(null);
-    //   })
-    //   .catch((error) => setError(error))
-    // .finally(() => setTimeout(() => setIsLoading(false), 200));
+    refetch(parse); // Trigger the query with new parameters
   }, [search, location.search]);
 
   const onSearch = () => {
@@ -201,22 +187,22 @@ export default function Characters() {
             />
           </Flex>
         </FilterContainer>
-        {/* {!error ? (
-        <Header>
-          <h1>No Results Found</h1>
-        </Header>
-      ) : (
-        <Header>
-          <h1>Characters</h1>
-        </Header>
-      )} */}
+        {!error && !data.characters.results.length > 0 ? (
+          <Header>
+            <h1>No Results Found</h1>
+          </Header>
+        ) : (
+          <Header>
+            <h1>Characters</h1>
+          </Header>
+        )}
         {loading ? (
           <Loader />
         ) : (
           <div>
-            {!error && data && (
+            {!error && (
               <>
-                <CharacterCard character={data.characters.results} />
+                <CharacterCard character={data?.characters?.results} />
                 <PaginationComponent
                   totalPages={data?.characters?.info?.pages || 0}
                   onChange={onPageChange}
@@ -224,11 +210,11 @@ export default function Characters() {
                 />
               </>
             )}
-            {/* {!error && (
-            <ImageWrapper>
-              <img src={RickToilet} alt="rick" />
-            </ImageWrapper>
-          )} */}
+            {!error && !data?.characters?.results?.length > 0 && (
+              <ImageWrapper>
+                <img src={RickToilet} alt="rick" />
+              </ImageWrapper>
+            )}
           </div>
         )}
       </Layout>
