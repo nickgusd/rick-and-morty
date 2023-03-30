@@ -83,6 +83,7 @@ export default function Characters() {
     setUrlParams(parse);
     setGender(null);
     setStatus(null);
+    setPage(parse.page);
 
     if (parse.page) {
       parse.page = Number(parse.page);
