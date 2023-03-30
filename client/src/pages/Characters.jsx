@@ -1,6 +1,9 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation, createSearchParams } from "react-router-dom";
 import queryString from "query-string";
+import { gql } from "@apollo/client";
+import { useQuery } from "@apollo/react-hooks";
 
 import ButtonComponent from "../components/Button/Button.jsx";
 import { CharacterCard } from "../components/CharacterCard.jsx";
@@ -22,42 +25,77 @@ import { title } from "../utils/string.js";
 export default function Characters() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
   const [inputData, setInputData] = useState("");
   const [search, setSearch] = useState(false);
   const [urlParams, setUrlParams] = useState(null);
-  const [error, setError] = useState(null);
   const [page, setPage] = useState(0);
   const [gender, setGender] = useState(null);
   const [status, setStatus] = useState(null);
   const parse = queryString.parse(location.search);
   const params = urlParams || { name: inputData };
 
+  const GET_CHARACTERS_QUERY = gql`
+    query GetCharacters(
+      $page: Int
+      $name: String
+      $status: String
+      $gender: String
+    ) {
+      characters(
+        page: $page
+        filter: { name: $name, status: $status, gender: $gender }
+      ) {
+        info {
+          count
+          pages
+        }
+        results {
+          id
+          created
+          name
+          image
+          status
+          species
+          type
+          gender
+          origin {
+            id
+            name
+          }
+          location {
+            id
+            name
+          }
+          episode {
+            id
+            name
+          }
+        }
+      }
+    }
+  `;
+
+  const { data, loading, error, refetch } = useQuery(GET_CHARACTERS_QUERY, {
+    variables: { parse },
+  });
+
   useEffect(() => {
     setUrlParams(parse);
     setGender(null);
     setStatus(null);
-    const fetchData = () => {
-      fetch(`https://rickandmortyapi.com/api/character${location.search}`)
-        .then((res) => res.json())
-        .then((response) => {
-          setIsLoading(true);
-          setData(response);
-          setUrlParams(null);
-        })
-        .catch((error) => setError(error))
-        .finally(() => setTimeout(() => setIsLoading(false), 200));
-    };
 
-    fetchData();
+    if (parse.page) {
+      parse.page = Number(parse.page);
+    }
+
+    refetch(parse); // Trigger the query with new parameters
   }, [search, location.search]);
 
   const onSearch = () => {
     setSearch(!search);
     navigate({
       pathname: "/characters",
-      search: `?${createSearchParams(params)}`,
+      search: `?${createSearchParams({ page: 1, ...params, name: inputData })}`,
     });
     setPage(1);
   };
@@ -125,59 +163,61 @@ export default function Characters() {
   ];
 
   return (
-    <Layout noResults={data.error && !error} characters>
-      <FilterContainer onKeyDown={keyDownHandler}>
-        <SearchWrapper>
-          <Search isLoading={false} onChange={handleChange} />
-          <ButtonComponent onClick={handleClick} primary={true} search />
-        </SearchWrapper>
-        <Flex isMobile>
-          <Filter
-            onChange={handleGenderFilter}
-            currentValue={title(parse.gender)}
-            options={genderOptions}
-            type="Gender"
-            value={gender}
-          />
-          <Filter
-            onChange={handleStatusChange}
-            currentValue={title(parse.status)}
-            options={statusOptions}
-            type="Status"
-            value={status}
-          />
-        </Flex>
-      </FilterContainer>
-      {data.error && !error ? (
-        <Header>
-          <h1>No Results Found</h1>
-        </Header>
-      ) : (
-        <Header>
-          <h1>Characters</h1>
-        </Header>
-      )}
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <div>
-          {!data.error && data && (
-            <>
-              <CharacterCard character={data.results} />
-              <PaginationComponent
-                totalPages={data?.info?.pages || 0}
-                onChange={onPageChange}
-                activePage={page}
-              />
-            </>
-          )}
-          {data.error && !error && (
-            <ImageWrapper>
-              <img src={RickToilet} alt="rick" />
-            </ImageWrapper>
-          )}
-        </div>
-      )}
-    </Layout>
+    data && (
+      <Layout characters>
+        <FilterContainer onKeyDown={keyDownHandler}>
+          <SearchWrapper>
+            <Search isLoading={false} onChange={handleChange} />
+            <ButtonComponent onClick={handleClick} primary={true} search />
+          </SearchWrapper>
+          <Flex isMobile>
+            <Filter
+              onChange={handleGenderFilter}
+              currentValue={title(parse.gender)}
+              options={genderOptions}
+              type="Gender"
+              value={gender}
+            />
+            <Filter
+              onChange={handleStatusChange}
+              currentValue={title(parse.status)}
+              options={statusOptions}
+              type="Status"
+              value={status}
+            />
+          </Flex>
+        </FilterContainer>
+        {!error && !data.characters.results.length > 0 ? (
+          <Header>
+            <h1>No Results Found</h1>
+          </Header>
+        ) : (
+          <Header>
+            <h1>Characters</h1>
+          </Header>
+        )}
+        {loading ? (
+          <Loader />
+        ) : (
+          <div>
+            {!error && (
+              <>
+                <CharacterCard character={data?.characters?.results} />
+                <PaginationComponent
+                  totalPages={data?.characters?.info?.pages || 0}
+                  onChange={onPageChange}
+                  activePage={page}
+                />
+              </>
+            )}
+            {!error && !data?.characters?.results?.length > 0 && (
+              <ImageWrapper>
+                <img src={RickToilet} alt="rick" />
+              </ImageWrapper>
+            )}
+          </div>
+        )}
+      </Layout>
+    )
   );
 }

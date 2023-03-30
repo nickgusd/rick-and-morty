@@ -8,6 +8,17 @@ import { createStore } from 'redux';
 import rootReducer from './reducers';
 // import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router-dom';
+// import { ApolloProvider } from "@apollo/react-hooks"
+// import ApolloClient from "apollo-boost"
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+// import gql from "graphql-tag"
+// import { useQuery } from "@apollo/react-hooks"
+
+export const client = new ApolloClient({
+  uri: 'https://rickandmortyapi.com/graphql',
+  cache: new InMemoryCache(),
+})
+
 
 import 'semantic-ui-css/semantic.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -19,9 +30,11 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
+    <ApolloProvider client={client}>
       <BrowserRouter>
         <App />
       </BrowserRouter>
+      </ApolloProvider >
     </Provider>
   </React.StrictMode>
 );
