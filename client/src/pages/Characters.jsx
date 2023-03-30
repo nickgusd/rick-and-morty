@@ -76,7 +76,7 @@ export default function Characters() {
   `;
 
   const { data, loading, error, refetch } = useQuery(GET_CHARACTERS_QUERY, {
-    variables: { parse },
+    variables: {},
   });
 
   useEffect(() => {
@@ -89,7 +89,12 @@ export default function Characters() {
       parse.page = Number(parse.page);
     }
 
-    refetch(parse); // Trigger the query with new parameters
+    if (location.search !== "") {
+      refetch(parse);
+    } else {
+      refetch({ page: 1, gender: null, status: null, name: null });
+    }
+    // Trigger the query with new parameters
   }, [search, location.search]);
 
   const onSearch = () => {
