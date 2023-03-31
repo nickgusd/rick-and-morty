@@ -13,7 +13,6 @@ export default function Locations() {
   const navigate = useNavigate();
   const router = useLocation();
   const id = router.pathname.split("/").pop();
-  const [index, setIndex] = useState(id !== "location" ? Number(id) : 0);
   const [loadMore, setLoadMore] = useState(false);
 
   const GET_LOCATION_CHARACTERS_QUERY = gql`
@@ -43,29 +42,26 @@ export default function Locations() {
     }
   `;
 
-  const { data, loading, refetch } = useQuery(GET_LOCATION_CHARACTERS_QUERY, {
-    fetchPolicy: "network-only",
+  const { data, loading } = useQuery(GET_LOCATION_CHARACTERS_QUERY, {
+    // fetchPolicy: "network-only",
     variables: { id: id !== "location" ? id : 1 },
   });
 
   useEffect(() => {
-    if (id === "location") {
-      setIndex(0);
-    }
     const hasCharacters = data?.location?.residents?.length;
     if (hasCharacters < 20 && !loading) {
       setLoadMore(false);
     }
-    refetch({ id: id });
+
     if (hasCharacters === 0 && !loading) {
       navigate(`/location/${Number(id) + 1}`);
     }
-  }, [loading, index, router]);
+  }, [loading, router]);
 
   const handleNavigate = () => {
-    setIndex(index + 1);
+    const newId = id === "location" ? 1 : Number(id) + 1;
     navigate({
-      pathname: `/location/${index}`,
+      pathname: `/location/${newId}`,
     });
   };
 
@@ -100,7 +96,7 @@ export default function Locations() {
           <h3>Click on the portal</h3>
           <img
             src={portal}
-            onClick={() => handleNavigate(true)}
+            onClick={handleNavigate}
             style={{ width: "200px", cursor: "pointer" }}
           />
         </>
