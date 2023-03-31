@@ -85,6 +85,10 @@ export default function Characters() {
     setStatus(null);
     setPage(parse.page);
 
+    if (location.search === "") {
+      setInputData("");
+    }
+
     if (parse.page) {
       parse.page = Number(parse.page);
     }
@@ -101,7 +105,7 @@ export default function Characters() {
     setSearch(!search);
     navigate({
       pathname: "/characters",
-      search: `?${createSearchParams({ page: 1, ...params, name: inputData })}`,
+      search: `?${createSearchParams({ ...params, page: 1, name: inputData })}`,
     });
     setPage(1);
   };
@@ -173,7 +177,11 @@ export default function Characters() {
       <Layout characters>
         <FilterContainer onKeyDown={keyDownHandler}>
           <SearchWrapper>
-            <Search isLoading={false} onChange={handleChange} />
+            <Search
+              isLoading={false}
+              onChange={handleChange}
+              value={inputData}
+            />
             <ButtonComponent onClick={handleClick} primary={true} search />
           </SearchWrapper>
           <Flex isMobile>
