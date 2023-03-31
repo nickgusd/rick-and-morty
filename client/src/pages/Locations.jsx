@@ -1,95 +1,91 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
+import { gql } from "@apollo/client";
+import { useQuery } from "@apollo/react-hooks";
 
 import { CharacterCard } from "../components/CharacterCard.jsx";
 import Loader from "../components/Loader/Loader.jsx";
 import portal from "../../src/assets/portal.png";
 import { Layout } from "../components/Layout/Layout.jsx";
-import { rickAndMortyActions } from "../reducers/index.js";
-import { rickSelectors } from "../selectors/index.js";
 import ButtonComponent from "../components/Button/Button.jsx";
 
 export default function Locations() {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const router = useLocation();
-  const [data, setData] = useState([]);
-  const [character, setCharacters] = useState([]);
-  const [index, setIndex] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
-  const [loadMore, setLoadMore] = useState(false);
   const id = router.pathname.split("/").pop();
+  const [index, setIndex] = useState(id !== "location" ? Number(id) : 0);
+  const [loadMore, setLoadMore] = useState(false);
 
-  const locations = useSelector(rickSelectors.getLocations) || [];
+  const GET_LOCATION_CHARACTERS_QUERY = gql`
+    query getLocationCharacters($id: ID! = 1) {
+      location(id: $id) {
+        id
+        name
+        type
+        residents {
+          id
+          name
+          created
+          type
+          gender
+          species
+          status
+          image
+          origin {
+            created
+            dimension
+            id
+            name
+            type
+          }
+        }
+      }
+    }
+  `;
 
-  const hasCharacters =
-    locations?.results
-      ?.filter((item) => item.residents.length)
-      ?.map((item) => item?.id) || [];
+  const { data, loading, refetch } = useQuery(GET_LOCATION_CHARACTERS_QUERY, {
+    fetchPolicy: "network-only",
+    variables: { id: id !== "location" ? id : 1 },
+  });
 
   useEffect(() => {
-    const fetchLocations = () => {
-      fetch(`https://rickandmortyapi.com/api/location`)
-        .then((res) => res.json())
-        .then((data) => {
-          dispatch(rickAndMortyActions.setLocations(data));
-        });
-    };
-
-    fetchLocations();
-  }, []);
-
-  useEffect(() => {
-    if (index === hasCharacters.length) {
+    if (id === "location") {
       setIndex(0);
     }
-
-    if (character.length < 20) {
+    const hasCharacters = data?.location?.residents?.length;
+    if (hasCharacters < 20 && !loading) {
       setLoadMore(false);
     }
-
-    if (id !== "location") {
-      fetch(`https://rickandmortyapi.com/api/location/${id || 1}`)
-        .then((res) => res.json())
-        .then((response) => {
-          if (id !== "location") setIsLoading(true);
-          setData(response);
-          Promise.all(response?.residents?.map((u) => fetch(u)))
-            .then((responses) =>
-              Promise.all(responses.map((res) => res.json()))
-            )
-            .then((texts) => {
-              setCharacters(texts);
-            })
-            .finally(() => {
-              setTimeout(() => setIsLoading(false), 200);
-            });
-        });
+    refetch({ id: id });
+    if (hasCharacters === 0 && !loading) {
+      navigate(`/location/${Number(id) + 1}`);
     }
-  }, [index, router]);
+  }, [loading, index, router]);
 
   const handleNavigate = () => {
     setIndex(index + 1);
     navigate({
-      pathname: `/location/${hasCharacters[index]}`,
+      pathname: `/location/${index}`,
     });
   };
 
   return (
     <Layout>
-      {isLoading ? (
+      {loading ? (
         <Loader />
       ) : id !== "location" ? (
         <>
-          <h1>{data.name}</h1>
+          <h1>{data?.location?.name}</h1>
           <img
             src={portal}
             onClick={handleNavigate}
             style={{ width: "200px", cursor: "pointer" }}
           />
-          <CharacterCard character={character} loadMore={loadMore} />
-          {!loadMore && character?.length > 20 && (
+          <CharacterCard
+            character={data?.location?.residents}
+            loadMore={loadMore}
+          />
+          {!loadMore && data?.location?.residents?.length > 20 && (
             <ButtonComponent
               onClick={() => setLoadMore(!loadMore)}
               secondary
@@ -104,7 +100,7 @@ export default function Locations() {
           <h3>Click on the portal</h3>
           <img
             src={portal}
-            onClick={handleNavigate}
+            onClick={() => handleNavigate(true)}
             style={{ width: "200px", cursor: "pointer" }}
           />
         </>
