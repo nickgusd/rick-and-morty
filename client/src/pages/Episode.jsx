@@ -1,44 +1,51 @@
-import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { gql } from "@apollo/client";
+import { useQuery } from "@apollo/react-hooks";
 import { CharacterCard } from "../components/CharacterCard.jsx";
 import LoaderComponent from "../components/Loader/Loader.jsx";
 import { Layout } from "../components/Layout/Layout.jsx";
 
 export default function Episode() {
   const location = useLocation();
-  const [episode, setEpisode] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [characters, setCharacters] = useState([]);
   const id = location.pathname.split("/").pop();
 
-  useEffect(() => {
-    fetch(`https://rickandmortyapi.com/api/episode/${id}`)
-      .then((res) => res.json())
-      .then((response) => {
-        setEpisode(response);
-        setIsLoading(true);
-        Promise.all(
-          response?.characters?.map((item) => {
-            return fetch(item).then((res) => res.json());
-          })
-        )
-          .then((res) => setCharacters(res))
-          .catch((err) => console.log(err))
-          .finally(() => setTimeout(() => setIsLoading(false), 200));
-      });
-  }, [location]);
+  const GET_CHARACTERS_BY_EPISODE_QUERY = gql`
+    query getCharactersByEpisode($episodeId: ID!) {
+      episode(id: $episodeId) {
+        id
+        name
+        air_date
+        episode
+        created
+        characters {
+          name
+          gender
+          created
+          image
+          id
+          species
+          status
+          type
+        }
+      }
+    }
+  `;
+
+  const { data, loading } = useQuery(GET_CHARACTERS_BY_EPISODE_QUERY, {
+    variables: { episodeId: id },
+  });
 
   return (
     <Layout>
-      {isLoading && <LoaderComponent />}
-      {Object.keys(episode).length && !isLoading ? (
+      {loading && <LoaderComponent />}
+      {!loading && data && (
         <>
-          <h1>{episode.name}</h1>
-          <div>{episode.episode}</div>
-          <div>{episode.air_date}</div>
+          <h1>{data.episode.name}</h1>
+          <div>{data.episode.episode}</div>
+          <div>{data.episode.air_date}</div>
+          <CharacterCard character={data.episode.characters} />
         </>
-      ) : null}
-      {!isLoading ? <CharacterCard character={characters} /> : null}
+      )}
     </Layout>
   );
 }
