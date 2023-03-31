@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
 import { useNavigate, createSearchParams, useLocation } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import { rickAndMortyActions } from "../reducers/index.js";
-import { rickSelectors } from "../selectors/index.js";
+
+import { gql } from "@apollo/client";
+import { useQuery } from "@apollo/react-hooks";
+import queryString from "query-string";
 
 import { EpisodeCard } from "../components/EpisodeCard.jsx";
 import { Layout } from "../components/Layout/Layout.jsx";
@@ -10,43 +10,51 @@ import PaginationComponent from "../components/Pagination/Pagination";
 import Loader from "../components/Loader/Loader.jsx";
 
 export default function Episodes() {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const episodes = useSelector(rickSelectors.getEpisodes) || [];
-  const [page, setPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
+  const parse = queryString.parse(location.search);
 
-  useEffect(() => {
-    fetch(`https://rickandmortyapi.com/api/episode${location.search}`)
-      .then((res) => res.json())
-      .then((response) => {
-        setIsLoading(true);
-        dispatch(rickAndMortyActions.setEpisodes(response));
-      })
-      .catch((err) => console.log(err))
-      .finally(() => setTimeout(() => setIsLoading(false), 200));
-  }, [page]);
+  const GET_EPISODES_QUERY = gql`
+    query getEpisodes($page: Int) {
+      episodes(page: $page) {
+        info {
+          count
+          pages
+        }
+        results {
+          id
+          name
+          air_date
+          created
+          episode
+        }
+      }
+    }
+  `;
+
+  const { data, loading } = useQuery(GET_EPISODES_QUERY, {
+    // fetchPolicy: "network-only",
+    variables: { page: Number(parse.page) },
+  });
 
   const onPageChange = (e, { activePage }) => {
-    setPage(activePage);
     navigate({
       pathname: "/episodes",
       search: `?${createSearchParams({
-        page: activePage
-      })}`
+        page: activePage,
+      })}`,
     });
   };
 
   return (
     <Layout>
       <div>
-        {isLoading ? (
+        {loading ? (
           <Loader />
         ) : (
           <>
             <h1>Episodes</h1>
-            {episodes?.results?.map((item) => (
+            {data?.episodes?.results?.map((item) => (
               <EpisodeCard
                 data={item}
                 key={item.id}
@@ -54,10 +62,10 @@ export default function Episodes() {
               />
             ))}
             <div>
-              {episodes && (
+              {data && (
                 <PaginationComponent
-                  totalPages={episodes?.info?.pages || 0}
-                  activePage={page}
+                  totalPages={data?.episodes?.info?.pages || 0}
+                  activePage={parse.page || 1}
                   onChange={onPageChange}
                 />
               )}
