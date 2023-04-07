@@ -187,13 +187,9 @@ export default function Characters() {
           />
         </Flex>
       </FilterContainer>
-      {!error && !data?.characters?.results?.length > 0 ? (
+      {!error && data?.characters?.results?.length === 0 && (
         <Header>
           <h1>No Results Found</h1>
-        </Header>
-      ) : (
-        <Header>
-          <h1>Characters</h1>
         </Header>
       )}
       {loading ? (
@@ -202,6 +198,9 @@ export default function Characters() {
         <div>
           {!error && data && (
             <>
+              <Header>
+                <h1>Characters</h1>
+              </Header>
               <CharacterCard character={data?.characters?.results} />
               <PaginationComponent
                 totalPages={data?.characters?.info?.pages || 0}
