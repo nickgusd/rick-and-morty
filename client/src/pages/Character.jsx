@@ -1,5 +1,6 @@
 import { useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { gql } from "@apollo/client";
+import { useQuery } from "@apollo/react-hooks";
 
 import { EpisodeCard } from "../components/EpisodeCard.jsx";
 import LoaderComponent from "../components/Loader/Loader.jsx";
@@ -11,66 +12,76 @@ import {
   GridWrapper,
   Header,
 } from "../components/Character.js";
+import { Container } from "./CharactersStyles.js";
 
 export default function Character() {
   const location = useLocation();
-  const [character, setCharacter] = useState([]);
-  const [episodes, setEpisodes] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
   const id = location.pathname.split("/").pop();
 
-  useEffect(() => {
-    fetch(`https://rickandmortyapi.com/api/character/${id}`)
-      .then((data) => {
-        return data.json();
-      })
-      .then((data) => {
-        setCharacter(data);
-        setIsLoading(true);
-        Promise.all(
-          data.episode.map((item) => {
-            return fetch(item).then((res) => res.json());
-          })
-        )
-          .then((res) => setEpisodes(res))
-          .catch((error) => console.log(error))
-          .finally(() => setTimeout(() => setIsLoading(false), 200));
-      });
-  }, []);
+  const GET_CHARACTER_QUERY = gql`
+    query getCharacter($id: ID!) {
+      character(id: $id) {
+        created
+        name
+        gender
+        image
+        created
+        status
+        species
+        origin {
+          id
+          name
+        }
+        type
+        episode {
+          name
+          air_date
+          created
+          episode
+        }
+      }
+    }
+  `;
+
+  const { data, loading } = useQuery(GET_CHARACTER_QUERY, {
+    variables: {
+      id: id,
+    },
+  });
 
   return (
     <Layout>
-      {isLoading ? (
+      {loading ? (
         <LoaderComponent />
-      ) : Object.keys(character).length ? (
-        <>
+      ) : Object.keys(data).length ? (
+        <Container>
           <Wrapper>
-            <img src={character?.image} />
+            <img src={data.character.image} />
             <RightWrapper>
               <Header>
-                <h1>{character?.name}</h1>
+                <h1>{data.character.name}</h1>
               </Header>
               <GridWrapper>
                 <GridRow>
                   {" "}
                   Status:
-                  <b>{character?.status}</b>
+                  <b>{data.character.status}</b>
                 </GridRow>
                 <GridRow>
-                  Gender: <b>{character?.gender}</b>
+                  Gender: <b>{data.character?.gender}</b>
                 </GridRow>{" "}
                 <GridRow>
                   {" "}
-                  Species: <b>{character?.species}</b>
+                  Species: <b>{data.character.species}</b>
                 </GridRow>
                 <GridRow>
-                  Origin: <b>{character?.origin?.name}</b>
+                  Origin: <b>{data.character.origin.name}</b>
                 </GridRow>
               </GridWrapper>
             </RightWrapper>
           </Wrapper>
-          {episodes.length
-            ? episodes.map((item) => (
+          {data.character.episode.length
+            ? data.character.episode.map((item) => (
                 <EpisodeCard
                   data={item}
                   key={item.id}
@@ -78,7 +89,7 @@ export default function Character() {
                 />
               ))
             : null}
-        </>
+        </Container>
       ) : null}
     </Layout>
   );

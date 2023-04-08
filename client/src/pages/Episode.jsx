@@ -4,6 +4,7 @@ import { useQuery } from "@apollo/react-hooks";
 import { CharacterCard } from "../components/CharacterCard.jsx";
 import LoaderComponent from "../components/Loader/Loader.jsx";
 import { Layout } from "../components/Layout/Layout.jsx";
+import { Container } from "./CharactersStyles.js";
 
 export default function Episode() {
   const location = useLocation();
@@ -39,12 +40,12 @@ export default function Episode() {
     <Layout>
       {loading && <LoaderComponent />}
       {!loading && data && (
-        <>
+        <Container>
           <h1>{data.episode.name}</h1>
           <div>{data.episode.episode}</div>
           <div>{data.episode.air_date}</div>
           <CharacterCard character={data.episode.characters} />
-        </>
+        </Container>
       )}
     </Layout>
   );
