@@ -61,10 +61,11 @@ export const Row = styled.div`
 `;
 
 export const ImageWrapper = styled.div`
-  margin: 24px 0px;
+  position: relative;
 
   & > img {
     width: 100%;
+    height: 100%;
   }
 `;
 

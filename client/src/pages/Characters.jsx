@@ -17,6 +17,7 @@ import PaginationComponent from "../components/Pagination/Pagination.jsx";
 import { Layout } from "../components/Layout/Layout.jsx";
 import { Filter } from "../components/Filter/Filter.jsx";
 import { FilterContainer, Flex } from "../components/Filter/Filter.js";
+import { NoResults, PaginationWrapper } from "./CharactersStyles.js";
 
 import RickToilet from "../assets/rick_and_morty_toilet.png";
 import { title } from "../utils/string.js";
@@ -187,34 +188,34 @@ export default function Characters() {
           />
         </Flex>
       </FilterContainer>
-      {!error && data?.characters?.results?.length === 0 && (
-        <Header>
-          <h1>No Results Found</h1>
-        </Header>
-      )}
       {loading ? (
         <Loader />
       ) : (
-        <div>
+        <>
           {!error && data?.characters?.results?.length > 0 && (
             <>
               <Header>
                 <h1>Characters</h1>
               </Header>
               <CharacterCard character={data?.characters?.results} />
-              <PaginationComponent
-                totalPages={data?.characters?.info?.pages || 0}
-                onChange={onPageChange}
-                activePage={parse.page || 1}
-              />
+              <PaginationWrapper>
+                <PaginationComponent
+                  totalPages={data?.characters?.info?.pages || 0}
+                  onChange={onPageChange}
+                  activePage={parse.page || 1}
+                />
+              </PaginationWrapper>
             </>
           )}
           {!error && !data?.characters?.results?.length > 0 && (
             <ImageWrapper>
+              <NoResults>
+                <h1>No Results Found</h1>
+              </NoResults>
               <img src={RickToilet} alt="rick" />
             </ImageWrapper>
           )}
-        </div>
+        </>
       )}
     </Layout>
   );
