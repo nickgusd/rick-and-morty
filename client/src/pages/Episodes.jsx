@@ -6,6 +6,7 @@ import queryString from "query-string";
 
 import { EpisodeCard } from "../components/EpisodeCard.jsx";
 import { Layout } from "../components/Layout/Layout.jsx";
+import { Container } from "./CharactersStyles.js";
 import PaginationComponent from "../components/Pagination/Pagination";
 import Loader from "../components/Loader/Loader.jsx";
 
@@ -52,7 +53,7 @@ export default function Episodes() {
         {loading ? (
           <Loader />
         ) : (
-          <>
+          <Container>
             <h1>Episodes</h1>
             {data?.episodes?.results?.map((item) => (
               <EpisodeCard
@@ -70,7 +71,7 @@ export default function Episodes() {
                 />
               )}
             </div>
-          </>
+          </Container>
         )}
       </div>
     </Layout>

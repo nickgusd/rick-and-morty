@@ -13,3 +13,7 @@ export const NoResults = styled.div`
 export const PaginationWrapper = styled.div`
     padding: 24px;
 `
+
+export const Container = styled.div`
+    padding: 24px;
+`
