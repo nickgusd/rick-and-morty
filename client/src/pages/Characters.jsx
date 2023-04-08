@@ -196,7 +196,7 @@ export default function Characters() {
         <Loader />
       ) : (
         <div>
-          {!error && data && (
+          {!error && data?.characters?.results?.length > 0 && (
             <>
               <Header>
                 <h1>Characters</h1>
