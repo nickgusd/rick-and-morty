@@ -34,6 +34,7 @@ export default function Character() {
         }
         type
         episode {
+          id
           name
           air_date
           created
