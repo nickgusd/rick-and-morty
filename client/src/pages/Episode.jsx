@@ -5,6 +5,8 @@ import { CharacterCard } from "../components/CharacterCard.jsx";
 import LoaderComponent from "../components/Loader/Loader.jsx";
 import { Layout } from "../components/Layout/Layout.jsx";
 import { Container } from "./CharactersStyles.js";
+import { PromptWrapper } from "./EpisodeStyles.js";
+import OpenAI from "../components/OpenAI/OpenAI.jsx";
 
 export default function Episode() {
   const location = useLocation();
@@ -44,6 +46,15 @@ export default function Episode() {
           <h1>{data.episode.name}</h1>
           <div>{data.episode.episode}</div>
           <div>{data.episode.air_date}</div>
+          <PromptWrapper>
+            <OpenAI
+              prompt={
+                data
+                  ? `what is the episode of Rick and Morty ${data?.episode?.episode} called ${data?.episode?.name} about?`
+                  : null
+              }
+            />
+          </PromptWrapper>
           <CharacterCard character={data.episode.characters} />
         </Container>
       )}
